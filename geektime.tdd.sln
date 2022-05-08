@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FEC472F3-58CB-4EF8-9351-0E191024E788}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C607C41B-375F-4E29-B941-7071E6798061}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "geektime.tdd.args", "src\geektime.tdd.args\geektime.tdd.args.csproj", "{A858E41A-EB1A-4386-A60A-833D2344FE47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "geektime.tdd.args.tests", "test\geektime.tdd.args.tests\geektime.tdd.args.tests.csproj", "{510F6E0D-1DDF-4B7C-9EE6-38E3106D6418}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A858E41A-EB1A-4386-A60A-833D2344FE47} = {C607C41B-375F-4E29-B941-7071E6798061}
+		{510F6E0D-1DDF-4B7C-9EE6-38E3106D6418} = {FEC472F3-58CB-4EF8-9351-0E191024E788}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A858E41A-EB1A-4386-A60A-833D2344FE47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A858E41A-EB1A-4386-A60A-833D2344FE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A858E41A-EB1A-4386-A60A-833D2344FE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A858E41A-EB1A-4386-A60A-833D2344FE47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{510F6E0D-1DDF-4B7C-9EE6-38E3106D6418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{510F6E0D-1DDF-4B7C-9EE6-38E3106D6418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{510F6E0D-1DDF-4B7C-9EE6-38E3106D6418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{510F6E0D-1DDF-4B7C-9EE6-38E3106D6418}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
