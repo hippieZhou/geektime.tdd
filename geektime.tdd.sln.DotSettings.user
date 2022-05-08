@@ -1,5 +1,10 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bf900d49_002Ddcb9_002D4785_002D9bbc_002D770a37d8eeb0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Example_1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bf900d49_002Ddcb9_002D4785_002D9bbc_002D770a37d8eeb0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Should_Example_1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::510F6E0D-1DDF-4B7C-9EE6-38E3106D6418::net6.0::geektime.tdd.args.tests.ArgsTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dee39cb7_002Dd3bf_002D489e_002Daf0e_002D9659fbd48834/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ArgsTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::510F6E0D-1DDF-4B7C-9EE6-38E3106D6418::net6.0::geektime.tdd.args.tests.ArgsTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;

@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44e755a4-98f9-461d-a4b7-d4eeb6bd99b2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.GeekTime_TDD/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/geektime.tdd.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/geektime.tdd.args/Args.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/geektime.tdd.args/OptionAttribute.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/geektime.tdd.args/OptionParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.geektime.tdd/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.geektime.tdd/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/geektime.tdd.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/geektime.tdd.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/geektime.tdd.args/Args.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/geektime.tdd.args/Args.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +44,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager" selected="bf900d49-dcb9-4785-9bbc-770a37d8eeb0" />
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -54,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1651975381799</updated>
       <workItem from="1651975394968" duration="1262000" />
-      <workItem from="1652012939719" duration="8009000" />
+      <workItem from="1652012939719" duration="13012000" />
     </task>
     <servers />
   </component>

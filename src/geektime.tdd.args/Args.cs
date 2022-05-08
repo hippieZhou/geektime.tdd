@@ -2,8 +2,17 @@ using System.Reflection;
 using BindingFlags = System.Reflection.BindingFlags;
 
 namespace geektime.tdd.args;
+
 public static class Args
 {
+    private static readonly IDictionary<Type, IOptionParser> PARSERS =
+        new Dictionary<Type, IOptionParser>
+        {
+            {typeof(bool), new BooleanOptionParser()},
+            {typeof(int), new SingleValueOptionParser<int>(Convert.ToInt32)},
+            {typeof(string), new SingleValueOptionParser<string>(Convert.ToString)}
+        };
+
     public static T Parse<T>(params string[] args)
     {
         var constructor = typeof(T)
@@ -18,26 +27,12 @@ public static class Args
 
     private static object ParseOption(string[] arguments, ParameterInfo parameter)
     {
-        object value = null;
-        var option = parameter.GetCustomAttribute<OptionAttribute>();
+        return GetOptionParser(parameter.ParameterType)
+            .Parse(arguments, parameter.GetCustomAttribute<OptionAttribute>());
+    }
 
-        if (parameter.ParameterType == typeof(Boolean))
-        {
-            value = arguments.Contains("-" + option.Value);
-        }
-
-        if (parameter.ParameterType == typeof(Int32))
-        {
-            var index = arguments.ToList().IndexOf("-" + option.Value);
-            value = int.Parse(arguments.ElementAt(index + 1));
-        }
-
-        if (parameter.ParameterType == typeof(String))
-        {
-            var index = arguments.ToList().IndexOf("-" + option.Value);
-            value = arguments.ElementAt(index + 1);
-        }
-
-        return value;
+    private static IOptionParser GetOptionParser(Type type)
+    {
+        return PARSERS[type];
     }
 }
