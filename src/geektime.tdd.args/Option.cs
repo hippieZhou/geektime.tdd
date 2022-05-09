@@ -14,3 +14,8 @@ public record MultiOptions(
 public record ListOptions(
     [Option("g")] string[] Group,
     [Option("d")] string[] Decimals);
+    
+    public record OptionsWithoutAnnotation(
+        [Option("l")] bool Logging,
+        int Port,
+        [Option("d")] string Directory);

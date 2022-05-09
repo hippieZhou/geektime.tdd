@@ -9,8 +9,8 @@ public static class Args
         new Dictionary<Type, IOptionParser>
         {
             {typeof(bool), new BooleanOptionParser()},
-            {typeof(int), new SingleValueOptionParser<int>(Convert.ToInt32)},
-            {typeof(string), new SingleValueOptionParser<string>(Convert.ToString)}
+            {typeof(int), new SingleValueOptionParser<int>(0, Convert.ToInt32)},
+            {typeof(string), new SingleValueOptionParser<string>(string.Empty, Convert.ToString)}
         };
 
     public static T Parse<T>(params string[] args)
@@ -27,6 +27,11 @@ public static class Args
 
     private static object ParseOption(string[] arguments, ParameterInfo parameter)
     {
+        if (parameter.GetCustomAttribute<OptionAttribute>() == null)
+        {
+            throw new IllegalOptionException(parameter.Name);
+        }
+
         return GetOptionParser(parameter.ParameterType)
             .Parse(arguments, parameter.GetCustomAttribute<OptionAttribute>());
     }
