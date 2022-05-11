@@ -12,10 +12,13 @@ public record MultiOptions(
     [Option("d")] string Directory);
 
 public record ListOptions(
-    [Option("g")] string[] Group,
-    [Option("d")] string[] Decimals);
-    
-    public record OptionsWithoutAnnotation(
-        [Option("l")] bool Logging,
-        int Port,
-        [Option("d")] string Directory);
+    [Option("g")] List<string> Group,
+    [Option("d")] List<int> Decimals);
+
+public record OptionsWithoutAnnotation(
+    [Option("l")] bool Logging,
+    int Port,
+    [Option("d")] string Directory);
+
+public record OptionsWithUnsupportedtypes(
+    [Option("l")] bool Logging);
