@@ -5,12 +5,14 @@ namespace geektime.tdd.args;
 
 public static class Args
 {
-    private static readonly IDictionary<Type, IOptionParser> PARSERS =
-        new Dictionary<Type, IOptionParser>
+    private static readonly IDictionary<Type, Func<string[], OptionAttribute, object>> PARSERS =
+        new Dictionary<Type, Func<string[], OptionAttribute, object>>
         {
-            {typeof(bool), new BooleanOptionParser()},
-            {typeof(int), new SingleValueOptionParser<int>(0, Convert.ToInt32)},
-            {typeof(string), new SingleValueOptionParser<string>(string.Empty, Convert.ToString)}
+            {typeof(bool), OptionParsers.Bool()},
+            {typeof(int), OptionParsers.Unary(0, Convert.ToInt32)},
+            {typeof(string), OptionParsers.Unary(string.Empty, Convert.ToString)},
+            {typeof(List<string>), OptionParsers.List(Array.Empty<string>(), Convert.ToString)},
+            {typeof(List<int>), OptionParsers.List(Array.Empty<int>(), Convert.ToInt32)}
         };
 
     public static T Parse<T>(params string[] args)
@@ -32,11 +34,19 @@ public static class Args
             throw new IllegalOptionException(parameter.Name);
         }
 
-        return GetOptionParser(parameter.ParameterType)
-            .Parse(arguments, parameter.GetCustomAttribute<OptionAttribute>());
+        try
+        {
+            return GetOptionParser(parameter.ParameterType)
+                .Invoke(arguments, parameter.GetCustomAttribute<OptionAttribute>());
+        }
+        catch (Exception)
+        {
+            var opt = parameter.GetCustomAttribute<OptionAttribute>();
+            throw new UnsupportedOptionTypeException(opt.Value);
+        }
     }
 
-    private static IOptionParser GetOptionParser(Type type)
+    private static Func<string[], OptionAttribute, object> GetOptionParser(Type type)
     {
         return PARSERS[type];
     }

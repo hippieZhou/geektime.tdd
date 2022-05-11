@@ -29,3 +29,24 @@ public class IllegalOptionException : Exception
         Parameter = parameter;
     }
 }
+
+public class IllegalValueException : Exception
+{
+    public string Option { get; }
+    public string Value { get;  }
+    public IllegalValueException(string option, string value)
+    {
+        Option = option;
+        Value = value;
+    }
+}
+
+public class UnsupportedOptionTypeException : Exception
+{
+    public string Option { get; }
+
+    public UnsupportedOptionTypeException(string option)
+    {
+        Option = option;
+    }
+}
