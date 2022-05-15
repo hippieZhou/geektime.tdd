@@ -1,14 +1,9 @@
 using System.ComponentModel;
 using FluentAssertions;
+using geektime.tdd.args.tests.Fixture;
 using Moq;
 
 namespace geektime.tdd.args.tests;
-
-public interface IMockValueParser
-{
-    int ConvertToInt(string input);
-    string ConvertToString(string input);
-}
 
 public class OptionParsersTest
 {

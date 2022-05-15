@@ -3,7 +3,7 @@ using BindingFlags = System.Reflection.BindingFlags;
 
 namespace geektime.tdd.args;
 
-public static class Args
+public class Args
 {
     private static readonly IDictionary<Type, Func<string[], OptionAttribute, object>> Parsers =
         new Dictionary<Type, Func<string[], OptionAttribute, object>>
@@ -17,26 +17,28 @@ public static class Args
 
     public static T Parse<T>(params string[] args)
     {
-        return Invoke<T>(args, Parsers);
+        return new Args(Parsers).ParseValue<T>(args);
     }
 
-    private static T Invoke<T>(
-        string[] args,
-        IDictionary<Type, Func<string[], OptionAttribute, object>> parsers)
+    private readonly IDictionary<Type, Func<string[], OptionAttribute, object>> _parsers;
+
+    public Args(IDictionary<Type, Func<string[], OptionAttribute, object>> parsers)
+    {
+        _parsers = parsers;
+    }
+
+    private T ParseValue<T>(params string[] args)
     {
         var constructor = typeof(T)
             .GetConstructors(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault();
 
         var values = constructor?.GetParameters()
-            .Select(parameterInfo => ParseOption(args, parameterInfo, parsers)).ToArray() ?? Array.Empty<object>();
+            .Select(parameterInfo => ParseOption(args, parameterInfo)).ToArray() ?? Array.Empty<object>();
 
         return (T) constructor?.Invoke(values)!;
     }
 
-    private static object ParseOption(
-        string[] arguments,
-        ParameterInfo parameterInfo,
-        IDictionary<Type, Func<string[], OptionAttribute, object>> parsers)
+    private object ParseOption(string[] arguments, ParameterInfo parameterInfo)
     {
         var optionAttribute = parameterInfo.GetCustomAttribute<OptionAttribute>();
         if (optionAttribute == null)
@@ -46,7 +48,7 @@ public static class Args
 
         try
         {
-            return parsers[parameterInfo.ParameterType].Invoke(arguments, optionAttribute);
+            return _parsers[parameterInfo.ParameterType].Invoke(arguments, optionAttribute);
         }
         catch (Exception)
         {
