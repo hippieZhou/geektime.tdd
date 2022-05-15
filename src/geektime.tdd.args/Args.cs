@@ -3,7 +3,7 @@ using BindingFlags = System.Reflection.BindingFlags;
 
 namespace geektime.tdd.args;
 
-public class Args
+public partial class Args
 {
     private static readonly IDictionary<Type, Func<string[], OptionAttribute, object>> Parsers =
         new Dictionary<Type, Func<string[], OptionAttribute, object>>
@@ -14,7 +14,7 @@ public class Args
             {typeof(List<string>), OptionParsers.List(Array.Empty<string>(), Convert.ToString)},
             {typeof(List<int>), OptionParsers.List(Array.Empty<int>(), Convert.ToInt32)}
         };
-
+    
     public static T Parse<T>(params string[] args)
     {
         return new Args(Parsers).ParseValue<T>(args);
