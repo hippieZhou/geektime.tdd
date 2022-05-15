@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --configuration Release --no-restore
     - name: Test
-      run: dotnet test --logger "xunit;LogFilePath=results/tests.xml" --no-restore
+      run: dotnet test test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj --logger "xunit;LogFilePath=results/tests.xml" --no-restore
       working-directory: test
     - name: Create test summary
       uses: test-summary/action@dist
