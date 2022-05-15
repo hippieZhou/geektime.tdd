@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+  
     runs-on: ubuntu-latest
 
     steps:
@@ -20,11 +20,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --no-restore
+      run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --configuration Release --no-restore
     - name: Test
-      run: |
-        dotnet build
-        dotnet test --logger "xunit;LogFilePath=results/tests.xml"
+      run: dotnet test --logger "xunit;LogFilePath=results/tests.xml" --no-restore
       working-directory: test
     - name: Create test summary
       uses: test-summary/action@dist
