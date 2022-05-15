@@ -5,7 +5,7 @@ namespace geektime.tdd.args;
 
 public static class Args
 {
-    private static readonly IDictionary<Type, Func<string[], OptionAttribute, object>> PARSERS =
+    private static readonly IDictionary<Type, Func<string[], OptionAttribute, object>> Parsers =
         new Dictionary<Type, Func<string[], OptionAttribute, object>>
         {
             {typeof(bool), OptionParsers.Bool()},
@@ -18,36 +18,32 @@ public static class Args
     public static T Parse<T>(params string[] args)
     {
         var constructor = typeof(T)
-            .GetConstructors(BindingFlags.Instance | BindingFlags.Public)[0];
+            .GetConstructors(BindingFlags.Instance | BindingFlags.Public).FirstOrDefault();
 
-        var values = constructor
-            .GetParameters()
-            .Select(x => ParseOption(args, x));
+        var values = constructor?.GetParameters()
+            .Select(parameterInfo => ParseOption(args, parameterInfo, Parsers)).ToArray() ?? Array.Empty<object>();
 
-        return (T) constructor.Invoke(values.ToArray());
+        return (T) constructor?.Invoke(values) ?? default;
     }
 
-    private static object ParseOption(string[] arguments, ParameterInfo parameter)
+    private static object ParseOption(
+        string[] arguments,
+        ParameterInfo parameterInfo,
+        IDictionary<Type, Func<string[], OptionAttribute, object>> parsers)
     {
-        if (parameter.GetCustomAttribute<OptionAttribute>() == null)
+        var optionAttribute = parameterInfo.GetCustomAttribute<OptionAttribute>();
+        if (optionAttribute == null)
         {
-            throw new IllegalOptionException(parameter.Name);
+            throw new IllegalOptionException(parameterInfo.Name ?? string.Empty);
         }
 
         try
         {
-            return GetOptionParser(parameter.ParameterType)
-                .Invoke(arguments, parameter.GetCustomAttribute<OptionAttribute>());
+            return parsers[parameterInfo.ParameterType].Invoke(arguments, optionAttribute);
         }
         catch (Exception)
         {
-            var opt = parameter.GetCustomAttribute<OptionAttribute>();
-            throw new UnsupportedOptionTypeException(opt.Value);
+            throw new UnsupportedOptionTypeException(optionAttribute.Value);
         }
-    }
-
-    private static Func<string[], OptionAttribute, object> GetOptionParser(Type type)
-    {
-        return PARSERS[type];
     }
 }
