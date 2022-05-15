@@ -20,6 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj --no-build --verbosity normal
