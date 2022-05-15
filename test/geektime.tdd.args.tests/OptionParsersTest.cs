@@ -1,7 +1,14 @@
 using System.ComponentModel;
 using FluentAssertions;
+using Moq;
 
 namespace geektime.tdd.args.tests;
+
+public interface IMockValueParser
+{
+    int ConvertToInt(string input);
+    string ConvertToString(string input);
+}
 
 public class OptionParsersTest
 {
@@ -54,9 +61,24 @@ public class OptionParsersTest
         [Fact]
         public void should_parse_value_if_flag_present()
         {
+            #region 状态验证
+
             OptionParsers.Unary(0, Convert.ToInt32)
                 .Invoke(new[] {"-p", "8080"}, new OptionAttribute("p"))
                 .Should().Be(8080);
+
+            #endregion
+
+            #region BDD：行为验证
+
+            var parserMock = new Mock<IMockValueParser>();
+            parserMock.Setup(x => x.ConvertToInt(It.IsAny<string>())).Returns(8080);
+            OptionParsers
+                .Unary(0, parserMock.Object.ConvertToInt)
+                .Invoke(new[] {"-p", "8080"}, new OptionAttribute("p"));
+            parserMock.Verify(x => x.ConvertToInt(It.IsAny<string>()), Times.Once);
+
+            #endregion
         }
 
         [Fact]
@@ -120,11 +142,27 @@ public class OptionParsersTest
         [Fact]
         public void should_parse_list_value()
         {
+            #region 状态验证
+
             OptionParsers
                 .List(Array.Empty<string>(), Convert.ToString)
                 .Invoke(new[] {"-g", "this", "is"}, new OptionAttribute("g"))
                 .Should()
                 .BeEquivalentTo(new[] {"this", "is"}, options => options.WithStrictOrdering());
+
+            #endregion
+
+            #region 行为验证
+
+            var parserMock = new Mock<IMockValueParser>();
+            parserMock.Setup(x => x.ConvertToString(It.IsAny<string>())).Returns("hello");
+            var list = OptionParsers
+                .List(Array.Empty<string>(), parserMock.Object.ConvertToString)
+                .Invoke(new[] {"-g", "this", "is"}, new OptionAttribute("g"));
+            parserMock.Verify(x => x.ConvertToString(It.IsAny<string>()), Times.Exactly(2));
+            list.Should().BeEquivalentTo(new[] {"hello", "hello"}, options => options.WithStrictOrdering());
+
+            #endregion
         }
 
         [Fact]

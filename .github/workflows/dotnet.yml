@@ -23,10 +23,11 @@ jobs:
       run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --no-restore
     - name: Test
       run: |
-        dotnet build test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj
-        dotnet test test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj --logger "xunit;LogFilePath=results/tests.xml"
+        dotnet build
+        dotnet test --logger "xunit;LogFilePath=results/tests.xml"
+      working-directory: test
     - name: Create test summary
       uses: test-summary/action@dist
       with:
-        paths: results/**/*.xml
+        paths: test/results/**/*.xml
       if: always()
