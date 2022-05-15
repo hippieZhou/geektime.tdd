@@ -1,4 +1,4 @@
-name: .NET
+name: Build and Test .NET Core
 
 on:
   push:
@@ -22,4 +22,11 @@ jobs:
     - name: Build
       run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --no-restore
     - name: Test
-      run: dotnet test test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj --no-build --verbosity normal
+      run: |
+        dotnet build test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj
+        dotnet test test/geektime.tdd.args.tests/geektime.tdd.args.tests.csproj --logger "xunit;LogFilePath=results/tests.xml"
+    - name: Create test summary
+      uses: test-summary/action@dist
+      with:
+        paths: results/**/*.xml
+      if: always()
