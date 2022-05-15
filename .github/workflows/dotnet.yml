@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         DOTNET_VERSION: [ '6.0.x' ]
-        OS: [ubuntu-latest, windows-latest, macOS-latest]
+        OS: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v2
