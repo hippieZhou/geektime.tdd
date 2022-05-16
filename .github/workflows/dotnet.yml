@@ -25,5 +25,7 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
+        working-directory: src/geektime.tdd.args
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+        working-directory: test/geektime.tdd.args.tests
