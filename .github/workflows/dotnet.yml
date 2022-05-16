@@ -7,27 +7,37 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  build-and-test:
+    name: with ${{matrix.OS}}
+    runs-on: ${{ matrix.OS }}
+    strategy:
+      matrix:
+        DOTNET_VERSION: [ '6.0.x' ]
+        OS: [ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build src/geektime.tdd.args/geektime.tdd.args.csproj --no-restore
-    - name: Test
-      run: |
-        dotnet build
-        dotnet test --logger "xunit;LogFilePath=results/tests.xml"
-      working-directory: test
-    - name: Create test summary
-      uses: test-summary/action@dist
-      with:
-        paths: test/results/**/*.xml
-      if: always()
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET ${{ matrix.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.DOTNET_VERSION }}
+
+      - name: Display dotnet version
+        run: dotnet --version
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --logger "xunit;LogFilePath=results/tests.xml" --no-restore
+        working-directory: test
+
+      - name: Create test summary
+        uses: test-summary/action@dist
+        with:
+          paths: test/results/**/*.xml
+        if: always()
