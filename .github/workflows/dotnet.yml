@@ -47,10 +47,9 @@ jobs:
         
       - name: Test
         run: dotnet test --logger "xunit;LogFilePath=results/tests.xml" --no-restore
-        working-directory: test
 
       - name: Create test summary
         uses: test-summary/action@dist
         with:
-          paths: test/results/**/*.xml
+          paths: results/**/*.xml
         if: always()
