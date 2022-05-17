@@ -23,6 +23,7 @@ jobs:
           dotnet-version: ${{ matrix.DOTNET_VERSION }}
       - name: Install dependencies
         run: dotnet restore
+        working-directory: src/geektime.tdd.args
         
       - name: Build
         run: dotnet build --configuration Release --no-restore
