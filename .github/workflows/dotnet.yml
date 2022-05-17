@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 defaults:
   run:
-    working-directory: .
+    working-directory: ..
 jobs:
   build-and-test:
     name: with ${{matrix.OS}}
