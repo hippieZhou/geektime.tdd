@@ -1,29 +1,53 @@
-name: Build and Test .NET Core
+name: Build and test
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build-and-test:
-    name: on ${{matrix.OS}}
-    runs-on: ${{ matrix.OS }}
-    strategy:
-      matrix:
-        DOTNET_VERSION: [ '6.0.x' ]
-        OS: [ubuntu-latest]
+
+  check-code-formatting:
+    runs-on: ubuntu-latest
+    name: Check code formating against editorconfig
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET Core SDK ${{ matrix.DOTNET_VERSION }}
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ matrix.DOTNET_VERSION }}
-          fetch-depth: 0
-      - name: Install dependencies
-        run: dotnet restore
-        
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Install dotnet-format tool
+      run: dotnet tool install -g dotnet-format
+    
+    - name: Check Code Format
+      run: dotnet-format --check
+
+  build-and-test:
+
+    runs-on: ubuntu-latest
+    name: dotnet build and test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build -c Release --no-restore
