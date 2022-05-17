@@ -5,9 +5,10 @@ on:
     branches: [main]
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
+
+
   checkout-for-environment:
     name: checkout for project environment
     runs-on: ubuntu-latest
@@ -23,6 +24,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
 
   build-and-test:
     name: dotnet build and test
