@@ -26,3 +26,12 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
         working-directory: ./src/geektime.tdd.args
+      - name: Test
+        run: dotnet test --logger "xunit;LogFilePath=results/tests.xml" --no-restore
+        working-directory: ./test/geektime.tdd.args.tests
+
+      - name: Create test summary
+        uses: test-summary/action@dist
+        with:
+          paths: ./test/results/**/*.xml
+        if: always()
