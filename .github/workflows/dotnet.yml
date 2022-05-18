@@ -29,8 +29,7 @@ jobs:
   build-and-test:
     name: dotnet build and test
     runs-on: ubuntu-latest
-    env:
-      config: 'Release'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -43,5 +42,5 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --configuration ${{ config }} --no-restore
+        run: dotnet build --configuration Release --no-restore
     
