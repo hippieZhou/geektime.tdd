@@ -1,43 +1,48 @@
-name: Build and Test .NET Core
+name: CI pipline
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
+
+
+  checkout-for-environment:
+    name: checkout for project environment
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+
   build-and-test:
-    name: with ${{matrix.OS}}
-    runs-on: ${{ matrix.OS }}
-    strategy:
-      matrix:
-        DOTNET_VERSION: [ '6.0.x' ]
-        OS: [ubuntu-latest]
+    name: dotnet build and test
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup .NET ${{ matrix.DOTNET_VERSION }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ matrix.DOTNET_VERSION }}
-
-      - name: Display dotnet version
-        run: dotnet --version
-
-      - name: Install dependencies
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
         run: dotnet restore
-
       - name: Build
         run: dotnet build --configuration Release --no-restore
-
       - name: Test
-        run: dotnet test --logger "xunit;LogFilePath=results/tests.xml" --no-restore
-        working-directory: test
-
-      - name: Create test summary
-        uses: test-summary/action@dist
-        with:
-          paths: test/results/**/*.xml
-        if: always()
+        run: dotnet test --logger "trx;LogFileName=test-results.trx" || true
+    
