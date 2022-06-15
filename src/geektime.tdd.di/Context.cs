@@ -18,19 +18,21 @@ public class Context
 
     public TInterface Get<TInterface>() where TInterface : class
     {
-        if (_providers.ContainsKey(typeof(TInterface)))
-        {
-            return (TInterface) _providers[typeof(TInterface)].Invoke();
-        }
-
-        throw new NotImplementedException(nameof(TInterface));
+        return (TInterface) _providers[typeof(TInterface)].Invoke();
     }
 
-    private static object CreateInstance(Type concreteType)
+    private object CreateInstance(Type concreteType)
     {
-        var defaultConstructor = concreteType.GetConstructors()[0];
-        var defaultParams = defaultConstructor.GetParameters();
-        var parameters = defaultParams.Select(param => CreateInstance(param.ParameterType)).ToArray();
-        return defaultConstructor.Invoke(parameters);
+        var constructors = concreteType.GetConstructors();
+        if (constructors.Length > 1)
+        {
+            throw new IllegalComponentException();
+        }
+
+        var defaultConstructor = constructors.Single();
+        var paramTypes = defaultConstructor.GetParameters().Select(p => p.ParameterType);
+        var dependencies = paramTypes.Select(paramType =>
+            _providers.ContainsKey(paramType) ? _providers[paramType].Invoke() : CreateInstance(paramType)).ToArray();
+        return defaultConstructor.Invoke(dependencies);
     }
 }

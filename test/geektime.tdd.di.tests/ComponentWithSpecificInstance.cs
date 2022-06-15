@@ -1,4 +1,4 @@
-namespace geektime.tdd.di.tests;
+namespace geektime.tdd.di;
 
 public class ComponentWithSpecificInstance : IComponent
 {
