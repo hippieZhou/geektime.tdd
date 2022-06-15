@@ -32,7 +32,14 @@ public class Context
         var defaultConstructor = constructors.Single();
         var paramTypes = defaultConstructor.GetParameters().Select(p => p.ParameterType);
         var dependencies = paramTypes.Select(paramType =>
-            _providers.ContainsKey(paramType) ? _providers[paramType].Invoke() : CreateInstance(paramType)).ToArray();
+        {
+            if (!_providers.ContainsKey(paramType))
+            {
+                throw new DependencyNotFoundException();
+            }
+
+            return _providers[paramType].Invoke();
+        }).ToArray();
         return defaultConstructor.Invoke(dependencies);
     }
 }

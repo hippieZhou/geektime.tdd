@@ -21,3 +21,8 @@ public class DependencyWithInjectConstructor : IDependency
 
     public string GetDependency() => _dependency;
 }
+
+public class DependencyDependedOnComponent : IDependency
+{
+    
+}

@@ -2,7 +2,7 @@ using FluentAssertions;
 
 namespace geektime.tdd.di;
 
-public partial class ContainerTest
+public class ContainerTest
 {
     public sealed partial class ComponentConstruction
     {
@@ -18,7 +18,8 @@ public partial class ContainerTest
         
         //TODO:abstract class
         //TODO:interface
-        public sealed partial class ConstructorInjection
+        
+        public sealed class ConstructorInjection
         {
             private readonly Context _context;
 
@@ -75,28 +76,37 @@ public partial class ContainerTest
             [Fact]
             public void should_throw_exception_if_multi_inject_constructors_provided()
             {
-                var act = () =>
-                {
-                    _context.Bind<IComponent, ComponentWithMultiConstructors>();
-                    _context.Get<IComponent>();
-                };
+                _context.Bind<IComponent, ComponentWithMultiConstructors>();
+                var act = () => _context.Get<IComponent>();
                 act.Should().Throw<IllegalComponentException>();
             }
+            
+            //TODO:no default constructor and inject constructor
             [Fact]
             public void should_throw_exception_if_no_inject_nor_default_constructor_provided()
             {
-                var act = () =>
-                {
-                    _context.Bind<IComponent, ComponentWithNoInjectConstructorNorDefaultConstructor>();
-                    _context.Get<IComponent>();
-                };
+                _context.Bind<IComponent, ComponentWithNoInjectConstructorNorDefaultConstructor>();
+                var act = () => _context.Get<IComponent>();
                 act.Should().Throw<IllegalComponentException>();
             }
-
-            //TODO:no default constructor and inject constructor
             
             //TODO:dependencies not exist
-            
+            [Fact]
+            public void should_throw_exception_if_dependency_not_found()
+            {
+                _context.Bind<IComponent, ComponentWithInjectConstructor>();
+                var act = () => _context.Get<IComponent>();
+                act.Should().Throw<DependencyNotFoundException>();
+            }
+
+            [Fact]
+            public void should_throw_exception_if_cyclic_dependencies_found()
+            {
+                _context.Bind<IComponent,ComponentWithInjectConstructor>();
+                _context.Bind<IDependency, DependencyDependedOnComponent>();
+                var act = () => _context.Get<IComponent>();
+                act.Should().Throw<CyclicDependenciesFoundException>();
+            }
         }
         
         public sealed class FieldInjection
